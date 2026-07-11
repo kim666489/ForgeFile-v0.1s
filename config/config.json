@@ -1,0 +1,29 @@
+{
+    "security": {
+        "require_confirmation": true,
+        "auto_approve_env": "FORGEFILE_YES",
+        "dangerous_patterns": [
+            "rm\\s+(-\\w*r\\w*f\\w*|-\\w*f\\w*r\\w*)\\s+/(\\s|$)",
+            "rm\\s+(-\\w*r\\w*f\\w*|-\\w*f\\w*r\\w*)\\s+~",
+            "rm\\s+(-\\w*r\\w*f\\w*|-\\w*f\\w*r\\w*)\\s+\\*",
+            "rm\\s+(-\\w*r\\w*f\\w*|-\\w*f\\w*r\\w*)\\s+\\$HOME",
+            "mkfs(\\.\\w+)?\\s+/dev/",
+            "dd\\s+.*if=.*of=/dev/(sd|nvme|hd)",
+            ":\\(\\)\\s*\\{\\s*:\\s*\\|\\s*:\\s*&?\\s*\\}\\s*;",
+            "chmod\\s+-R\\s+777\\s+/(\\s|$)",
+            "chown\\s+-R\\s+.*\\s+/(\\s|$)",
+            "curl\\s+[^\\n|]*\\|\\s*(sudo\\s+)?(sh|bash|zsh)",
+            "wget\\s+[^\\n|]*\\|\\s*(sudo\\s+)?(sh|bash|zsh)",
+            "sudo\\s+rm\\s",
+            ">\\s*/dev/sd[a-z]",
+            ">\\s*/dev/nvme\\d",
+            "\\bshutdown\\b",
+            "\\breboot\\b",
+            "\\bpoweroff\\b",
+            "mv\\s+.*\\s+/dev/null",
+            "\\bformat\\b\\s+[a-zA-Z]:",
+            ":\\\\.*del\\s+/[sq]"
+        ]
+    },
+    "version":"v0.1s"
+}

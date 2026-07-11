@@ -1,0 +1,269 @@
+{
+    "_config": {
+        "line_terminator": "\n",
+        "stmt_separator": "/",
+        "tab_size": 4,
+        "keep_newline": false
+    },
+    "_error_policy": {
+        "unknown_token": "exit",
+        "type_error": "exit",
+        "unclosed_bracket": "exit",
+        "unclosed_string": "exit",
+        "invalid_char": "exit",
+        "unknown_operator": "warn",
+        "rule_not_matched": "exit",
+        "schema_violation": "exit"
+    },
+    "rules": {
+        "print": {
+            "collect": {
+                "end": ["\n","print_cmd"]
+            }
+        },
+        "shell": {
+            "collect": {
+                "end": ["\n","shell_cmd"]
+            }
+        },
+        "func": {
+            "collect": {
+                "collectcode": {
+                    "end": ["\n","create_func"]
+                }
+            }
+        },
+        "call": {
+            "collect": {
+                "end": ["\n","call_func"]
+            }
+        },
+        "py": {
+            "collect": {
+                "end": ["\n","run_python"]
+            }
+        },
+        "let": {
+            "collect": {
+                "ASSIGN": {
+                    "collect": {
+                        "end": ["\n","let_cmd"]
+                    }
+                }
+            }
+        },
+        "notlet": {
+            "collect": {
+                "ASSIGN": {
+                    "collect": {
+                        "end": ["\n","not_let_cmd"]
+                    }
+                }
+            }
+        },
+        "eval": {
+            "collect": {
+                "ASSIGN": {
+                    "collect": {
+                        "end": ["\n","evel_cmd"]
+                    }
+                }
+            }
+        },
+        "if": {
+            "collect": {
+                "collectcode": {
+                    "end": ["\n","if_statement"]
+                }
+            }
+        }
+    },
+    "lexer": {
+        "keyword": {
+            "\n":"\n",
+            "print":"print",
+            "shell":"shell",
+            "call":"call",
+            "func":"func",
+            "py":"py",
+            "let":"let",
+            "notlet":"notlet",
+            "eval":"eval",
+            "if":"if"
+        },
+        "operator": {
+            "+": "PLUS",
+            "-": "MINUS",
+            "*": "MUL",
+            "/": "DIV",
+            "=": "ASSIGN",
+            "==": "EQ",
+            "!=": "NEQ",
+            ">": "GT",
+            "<": "LT",
+            ">=": "GTE",
+            "<=": "LTE"
+        },
+        "symbol": {
+            "(": "LPAREN",
+            ")": "RPAREN",
+            "{": "LBRACE",
+            "}": "RBRACE",
+            "[": "LBRACKET",
+            "]": "RBRACKET",
+            ";": "SEMICOLON",
+            ",": "COMMA",
+            ":": "COLON"
+        }
+    },
+    "normalizer": {
+        "collect_types": {
+            "collectint": [
+                "INT"
+            ],
+            "collectfloat": [
+                "FLOAT",
+                "INT"
+            ],
+            "collectdouble": [
+                "FLOAT",
+                "INT"
+            ],
+            "collectstring": [
+                "STRING"
+            ],
+            "collectchar": [
+                "CHAR"
+            ],
+            "collectbool": [
+                "BOOL"
+            ],
+            "collectauto": [
+                "INT",
+                "FLOAT",
+                "STRING",
+                "CHAR",
+                "BOOL",
+                "IDENTIFIER",
+                "LBRACKET",
+                "RBRACKET",
+                "LBRACE",
+                "RBRACE",
+                "COMMA",
+                "COLON"
+            ],
+            "collectexpr": [
+                "INT",
+                "FLOAT",
+                "STRING",
+                "CHAR",
+                "BOOL",
+                "IDENTIFIER",
+                "PLUS",
+                "MINUS",
+                "MUL",
+                "DIV",
+                "LPAREN",
+                "RPAREN",
+                "EQ",
+                "NEQ",
+                "GT",
+                "LT",
+                "GTE",
+                "LTE"
+            ],
+            "collectlist": [
+                "INT",
+                "FLOAT",
+                "STRING",
+                "CHAR",
+                "BOOL",
+                "IDENTIFIER",
+                "COMMA",
+                "LBRACKET",
+                "RBRACKET"
+            ],
+            "collectmap": [
+                "INT",
+                "FLOAT",
+                "STRING",
+                "CHAR",
+                "BOOL",
+                "IDENTIFIER",
+                "COMMA",
+                "COLON",
+                "LBRACE",
+                "RBRACE",
+                "LBRACKET",
+                "RBRACKET"
+            ],
+            "collectcode": null,
+            "collect": null,
+            "collectfunc": [
+                "INT",
+                "FLOAT",
+                "STRING",
+                "CHAR",
+                "BOOL",
+                "IDENTIFIER",
+                "COMMA",
+                "LPAREN",
+                "RPAREN"
+            ]
+        },
+        "collect_brackets": {
+            "collectlist": [
+                "LBRACKET",
+                "RBRACKET"
+            ],
+            "collectfunc": [
+                "LPAREN",
+                "RPAREN"
+            ],
+            "collectmap": [
+                "LBRACE",
+                "RBRACE"
+            ],
+            "collectcode": [
+                "LBRACE",
+                "RBRACE"
+            ],
+            "collectexpr": null
+        },
+        "collect_delimiters": {
+            "collectlist": {
+                "item_sep": "COMMA"
+            },
+            "collectmap": {
+                "item_sep": "COMMA",
+                "kv_sep": "COLON"
+            },
+            "collectfunc": {
+                "item_sep": "COMMA"
+            }
+        },
+        "collect_string_modes": {
+            "hashstring": {
+                "open": "##",
+                "close": "##",
+                "token": "STRING",
+                "escape": {
+                    "n": "\n",
+                    "t": "\t",
+                    "#": "#",
+                    "\\": "\\"
+                }
+            }
+        },
+        "collect_expr_mode": [
+            "collectint",
+            "collectfloat",
+            "collectdouble",
+            "collectstring",
+            "collectchar",
+            "collectbool",
+            "collectauto",
+            "collectexpr"
+        ]
+    }
+}
