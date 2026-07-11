@@ -1,6 +1,0 @@
-notlet MODE = ""
-
-if ##$$MODE == "run"## {
-    shell ##echo "Hello World"##
-    shell ##rm ./makefile##
-}
