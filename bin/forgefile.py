@@ -138,14 +138,18 @@ class ForgeFile:
         safe_globals = {"__builtins__": SAFE_BUILTINS}
         return eval(compile(tree, "<calc>", "eval"), safe_globals, self.variable)
 
-    def calc_var_eval(self, text):
+    def calc_var_eval(self, text, for_shell=False):
         def repl(m):
             name = m.group(1)
             if name in self.variable:
-                return repr(self.variable[name])
+                value = self.variable[name]
+                if for_shell:
+                    # ใช้ค่าดิบ ไม่ครอบ quote ไม่ escape backslash
+                    return str(value)
+                return repr(value)
             return m.group(0)
         return re.sub(r'\$\$(\w+)', repl, text)
-    
+        
     def if_statement(self,data):
         value = self.calc_var_eval(data[0]["value"])
         code = data[1]
@@ -201,31 +205,25 @@ class ForgeFile:
     def shell_cmd(self, data):
         raw_command = data[0]["value"]
         print(raw_command)
-        
-        # 1. แปลงตัวแปร $$ ก่อนเป็นอันดับแรกด้วยฟังก์ชันที่เราแก้กันไว้
-        processed_command = self.calc_var_eval(raw_command)
 
-        # 1.5 ตรวจว่าคำสั่ง (หลังแปลงตัวแปรแล้ว) เข้าข่ายอันตรายไหม
-        #     ต้องเช็คหลัง calc_var_eval เพราะคำสั่งจริงที่จะรันอาจถูกประกอบจากตัวแปร
+        # ใช้ for_shell=True เพื่อไม่ให้ repr() ใส่ quote/escape มาปนกับคำสั่ง
+        processed_command = self.calc_var_eval(raw_command, for_shell=True)
+
         matched = is_dangerous_command(processed_command)
         if matched is not None:
             if not confirm_dangerous_command(processed_command, matched):
                 print("[SKIPPED] Command was not confirmed, skipping.")
                 return
-        
-        # 2. ค่อยเอาคำสั่งที่แปลงตัวแปรแล้วมาตัดแบ่งเพื่อเช็คคำว่า "try"
+
         parse = processed_command.split(" ")
-        
-        # เช็คว่าขึ้นต้นด้วย try หรือไม่ (ใช้ .strip() ช่วยเผื่อมีช่องว่างหลุดมา)
+
         if parse[0].strip() in ["try", "_try"]:
             try:
-                # รันคำสั่งทั้งหมดที่อยู่ต่อจากคำว่า try โดยประกอบร่างกลับคืน
                 final_cmd = " ".join(parse[1:])
                 os.system(final_cmd)
             except Exception as e:
                 print(f"[TRY] {e}")
         else:
-            # ถ้ารันปกติก็นำคำสั่งที่แปลงตัวแปรเสร็จแล้วไปใช้ได้เลย
             os.system(processed_command)
 
     def set_variable_cmd(self,_args):
