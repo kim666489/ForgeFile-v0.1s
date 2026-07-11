@@ -207,6 +207,7 @@ class ForgeFile:
 
         # ใช้ for_shell=True เพื่อไม่ให้ repr() ใส่ quote/escape มาปนกับคำสั่ง
         processed_command = self.calc_var_eval(raw_command, for_shell=True)
+        print(processed_command)
 
         matched = is_dangerous_command(processed_command)
         if matched is not None:
@@ -219,12 +220,10 @@ class ForgeFile:
         if parse[0].strip() in ["try", "_try"]:
             try:
                 final_cmd = " ".join(parse[1:])
-                print(processed_command)
                 os.system(final_cmd)
             except Exception as e:
                 print(f"[TRY] {e}")
         else:
-            print(processed_command)
             os.system(processed_command)
 
     def set_variable_cmd(self,_args):
