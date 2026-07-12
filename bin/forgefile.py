@@ -112,8 +112,19 @@ class ForgeFile:
             "evel_cmd":self.evel_cmd,
             "not_let_cmd":self.not_let_cmd,
             "if_statement":self.if_statement,
+            "set_value":self.set_value
         }
         self.func = {}
+        self.setting = {
+            "public_function":0
+        }
+
+    def set_value(self,data):
+        if not data[0]["value"] in self.setting:
+            raise Exception(f"Not setting {data[0]["value"]}.")
+        self.setting[data[0]["value"]] = data[1]["value"]
+        if debug:
+            print(self.setting)
 
     def calc(self, text):
         # 1. ตรวจโครงสร้างนิพจน์ก่อน ว่าเป็นแค่ expression ปกติ ไม่มีการเรียก
@@ -161,6 +172,8 @@ class ForgeFile:
             ff.ir = code
             ff.running_ir()
             self.variable = ff.variable
+            if self.setting["public_function"] == 1:
+                self.func = ff.func
 
     def evel_cmd(self,data):
         if len(data) < 2:

@@ -76,6 +76,15 @@
                     "end": ["\n","if_statement"]
                 }
             }
+        },
+        "set": {
+            "collect": {
+                "ASSIGN": {
+                    "collect": {
+                        "end": ["\n","set_value"]
+                    }
+                }
+            }
         }
     },
     "lexer": {
@@ -89,7 +98,8 @@
             "let":"let",
             "notlet":"notlet",
             "eval":"eval",
-            "if":"if"
+            "if":"if",
+            "set":"set"
         },
         "operator": {
             "+": "PLUS",
