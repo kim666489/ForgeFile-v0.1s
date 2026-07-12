@@ -172,8 +172,6 @@ class ForgeFile:
             ff.ir = code
             ff.running_ir()
             self.variable = ff.variable
-            if self.setting["public_function"] == 1:
-                self.func = ff.func
 
     def evel_cmd(self,data):
         if len(data) < 2:
@@ -214,6 +212,8 @@ class ForgeFile:
         ff.ir = _function["code"]
         ff.running_ir()
         self.variable = ff.variable
+        if self.setting["public_function"] == 1:
+                self.func = ff.func
 
     def shell_cmd(self, data):
         raw_command = data[0]["value"]
