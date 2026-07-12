@@ -141,6 +141,21 @@ func build {
 call build
 ```
 
+### Setting forgefile interpreter
+```
+set public_function=1
+
+func run {
+    func build {
+        shell ##echo "Building..."##
+    }
+    func test {
+        shell ##echo "Testing..."##
+    }
+}
+call build
+```
+
 Command-line arguments that aren't `VAR=value` pairs are treated as target names and invoked automatically, e.g. `forgefile build` runs the `build` function.
 
 ## Configuration / Grammar
