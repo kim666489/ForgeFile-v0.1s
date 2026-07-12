@@ -209,6 +209,7 @@ class ForgeFile:
 
         ff = ForgeFile(self.args)
         ff.variable = self.variable
+        ff.func = self.func
         ff.ir = _function["code"]
         ff.running_ir()
         self.variable = ff.variable
